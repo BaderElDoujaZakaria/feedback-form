@@ -7,136 +7,148 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
+      margin: 20px;
     }
-    .container {
-      margin: 20px auto;
-      max-width: 600px;
+    .feedback-options {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
     }
-    h1 {
-      color: #333;
-    }
-    .emoji {
-      font-size: 24px;
+    .feedback-options div {
+      margin: 10px 0;
       cursor: pointer;
-      margin: 10px;
+      font-size: 18px;
     }
-    .selected {
+    .feedback-options div:hover {
       font-weight: bold;
     }
-    .stars input {
-      display: none;
+    .rating {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
     }
-    .stars label {
-      font-size: 24px;
-      color: gray;
+    .rating span {
+      font-size: 25px;
       cursor: pointer;
     }
-    .stars input:checked ~ label {
+    .rating span.selected {
       color: gold;
     }
-    .stars label:hover,
-    .stars label:hover ~ label {
-      color: gold;
-    }
-    button {
-      padding: 10px 20px;
+    .submit-button {
       background-color: red;
       color: white;
+      padding: 10px 20px;
       border: none;
       cursor: pointer;
-      border-radius: 5px;
       font-size: 16px;
+      border-radius: 5px;
     }
-    button:hover {
+    .submit-button:hover {
       background-color: darkred;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Feedback Form</h1>
-    <h2>How was our service?</h2>
-    <div>
-      <span class="emoji" onclick="selectService('Great')">😊 Great</span>
-      <span class="emoji" onclick="selectService('Good')">🙂 Good</span>
-      <span class="emoji" onclick="selectService('Ok')">😐 Ok</span>
-      <span class="emoji" onclick="selectService('Bad')">☹️ Bad</span>
-    </div>
-    <p id="selected-service">You selected: </p>
+  <h1>Feedback Form</h1>
+  <div>
+    <label for="name">Your Name:</label>
+    <input type="text" id="name" required>
+  </div>
+  <h2>How was our service?</h2>
+  <div class="feedback-options" id="feedbackOptions">
+    <div data-feedback="Great">😊 Great</div>
+    <div data-feedback="Good">🙂 Good</div>
+    <div data-feedback="Ok">😐 Ok</div>
+    <div data-feedback="Bad">☹️ Bad</div>
+  </div>
+  <p id="selectedFeedback">You selected: None</p>
 
-    <form>
-      <h3>Rate Car Interior and Exterior Cleaning:</h3>
-      <div class="stars">
-        <input type="radio" id="cleaning1" name="cleaningRating" value="1"><label for="cleaning1">★</label>
-        <input type="radio" id="cleaning2" name="cleaningRating" value="2"><label for="cleaning2">★</label>
-        <input type="radio" id="cleaning3" name="cleaningRating" value="3"><label for="cleaning3">★</label>
-        <input type="radio" id="cleaning4" name="cleaningRating" value="4"><label for="cleaning4">★</label>
-        <input type="radio" id="cleaning5" name="cleaningRating" value="5"><label for="cleaning5">★</label>
-      </div>
-
-      <h3>Rate the friendliness and professionalism of the staff:</h3>
-      <div class="stars">
-        <input type="radio" id="staff1" name="staffRating" value="1"><label for="staff1">★</label>
-        <input type="radio" id="staff2" name="staffRating" value="2"><label for="staff2">★</label>
-        <input type="radio" id="staff3" name="staffRating" value="3"><label for="staff3">★</label>
-        <input type="radio" id="staff4" name="staffRating" value="4"><label for="staff4">★</label>
-        <input type="radio" id="staff5" name="staffRating" value="5"><label for="staff5">★</label>
-      </div>
-
-      <h3>Were the staff attentive to your needs?</h3>
-      <input type="text" name="staffAttention" placeholder="Type your response">
-
-      <h3>Were there any issues during the process?</h3>
-      <input type="text" name="issues" placeholder="Describe any issues">
-
-      <h3>Additional comments or suggestions:</h3>
-      <input type="text" name="recommendation" placeholder="Share your feedback">
-
-      <br><br>
-      <button type="button" onclick="submitFeedback()">Submit</button>
-    </form>
+  <h3>Rate Car Interior and Exterior Cleaning:</h3>
+  <div class="rating" id="cleaningRating">
+    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
   </div>
 
-  <script>
-    let selectedService = '';
+  <h3>Rate the friendliness and professionalism of the staff:</h3>
+  <div class="rating" id="staffRating">
+    <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+  </div>
 
-    function selectService(service) {
-      selectedService = service;
-      document.getElementById('selected-service').innerText = `You selected: ${service}`;
-    }
+  <div>
+    <label for="staffAttention">Were the staff attentive to your needs?</label>
+    <input type="text" id="staffAttention">
+  </div>
+  <div>
+    <label for="issues">Were there any issues during or after the carwash?</label>
+    <input type="text" id="issues">
+  </div>
+  <div>
+    <label for="recommendation">Would you recommend our service?</label>
+    <input type="text" id="recommendation">
+  </div>
+
+  <button class="submit-button" onclick="submitFeedback()">Submit</button>
+
+  <script>
+    let selectedFeedback = "None";
+    let cleaningRating = 0;
+    let staffRating = 0;
+
+    document.getElementById("feedbackOptions").addEventListener("click", function (e) {
+      if (e.target.dataset.feedback) {
+        selectedFeedback = e.target.dataset.feedback;
+        document.getElementById("selectedFeedback").innerText = `You selected: ${selectedFeedback}`;
+      }
+    });
+
+    document.getElementById("cleaningRating").addEventListener("click", function (e) {
+      const stars = Array.from(this.children);
+      cleaningRating = stars.indexOf(e.target) + 1;
+      stars.forEach((star, index) => {
+        star.classList.toggle("selected", index < cleaningRating);
+      });
+    });
+
+    document.getElementById("staffRating").addEventListener("click", function (e) {
+      const stars = Array.from(this.children);
+      staffRating = stars.indexOf(e.target) + 1;
+      stars.forEach((star, index) => {
+        star.classList.toggle("selected", index < staffRating);
+      });
+    });
 
     async function submitFeedback() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbwpaw-slZcfdyxWLYBNT1VQ-V0vq0sAWQPrF_kD5Hfitc5UxmAagW5S09Y1V00mm9VxzA/exec';
-      const formData = new FormData(document.querySelector('form'));
-
       const feedbackData = {
-        name: 'Anonymous', // Add a name field if needed
-        serviceFeedback: selectedService,
-        cleaningRating: formData.get('cleaningRating'),
-        staffRating: formData.get('staffRating'),
-        staffAttention: formData.get('staffAttention'),
-        issues: formData.get('issues'),
-        recommendation: formData.get('recommendation'),
+        name: document.getElementById("name").value,
+        serviceFeedback: selectedFeedback,
+        cleaningRating: cleaningRating,
+        staffRating: staffRating,
+        staffAttention: document.getElementById("staffAttention").value,
+        issues: document.getElementById("issues").value,
+        recommendation: document.getElementById("recommendation").value,
       };
 
       try {
-        const response = await fetch(scriptURL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(feedbackData),
-        });
-        const jsonResponse = await response.json();
-        if (jsonResponse.status === 'success') {
-          alert('Feedback submitted successfully!');
+        const response = await fetch(
+          "https://script.google.com/macros/s/YOUR_WEB_APP_URL/exec", // Replace with your Google Apps Script Web App URL
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(feedbackData),
+          }
+        );
+
+        const result = await response.json();
+        if (result.status === "success") {
+          alert("Feedback submitted successfully!");
         } else {
-          alert('Error submitting feedback: ' + jsonResponse.message);
+          alert("Error submitting feedback: " + result.message);
         }
       } catch (error) {
-        console.error('Error!', error);
-        alert('Failed to submit feedback.');
+        console.error("Error!", error);
+        alert("Error! Failed to submit feedback.");
       }
     }
   </script>
