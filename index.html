@@ -1,235 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Wash Feedback Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: auto;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            text-align: center;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 400px;
-        }
-        h2, h3 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
-            text-align: left;
-        }
-        .header-img {
-            display: block;
-            margin: 0 auto;
-            width: 150px;
-        }
-        .emoji-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .emoji {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: transform 0.2s ease;
-        }
-        .emoji:hover {
-            transform: scale(1.2);
-        }
-        .emoji-label {
-            font-size: 18px;
-        }
-        .selected-feedback {
-            margin-top: 20px;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .stars {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-        .stars i {
-            font-size: 25px;
-            color: #ccc;
-            transition: color 0.3s;
-        }
-        .stars i.selected {
-            color: gold;
-        }
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            resize: none;
-            outline: none;
-        }
-        button {
-            margin-top: 20px;
-            background-color: #FF0000;
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #cc0000;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      margin: 20px auto;
+      max-width: 600px;
+    }
+    h1 {
+      color: #333;
+    }
+    .emoji {
+      font-size: 24px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .selected {
+      font-weight: bold;
+    }
+    .stars input {
+      display: none;
+    }
+    .stars label {
+      font-size: 24px;
+      color: gray;
+      cursor: pointer;
+    }
+    .stars input:checked ~ label {
+      color: gold;
+    }
+    .stars label:hover,
+    .stars label:hover ~ label {
+      color: gold;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: darkred;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Header Image -->
-        <img src="Picture1.png" alt="Apec Logo" class="header-img">
-
-        <h2>Car Wash Feedback Form</h2>
-
-        <!-- Client Name -->
-        <label for="clientName">Your Name</label>
-        <input type="text" id="clientName" placeholder="Enter your name" required>
-
-        <!-- Service Rating -->
-        <h3>How was our service?</h3>
-        <div class="emoji-container">
-            <div class="emoji" onclick="selectEmoji('Great', '😊')" style="color: green;">
-                😊 <span class="emoji-label">Great</span>
-            </div>
-            <div class="emoji" onclick="selectEmoji('Good', '🙂')" style="color: green;">
-                🙂 <span class="emoji-label">Good</span>
-            </div>
-            <div class="emoji" onclick="selectEmoji('Ok', '😐')" style="color: goldenrod;">
-                😐 <span class="emoji-label">Ok</span>
-            </div>
-            <div class="emoji" onclick="selectEmoji('Bad', '🙁')" style="color: red;">
-                🙁 <span class="emoji-label">Bad</span>
-            </div>
-        </div>
-        <div class="selected-feedback" id="selectedFeedback">
-            <!-- Selected feedback will be displayed here -->
-        </div>
-
-        <!-- Additional Questions -->
-        <label>Rate Car Interior and Exterior Cleaning:</label>
-        <div class="stars" id="cleaningStars" onclick="selectStars('cleaning', event)">
-            <i class="fa fa-star" data-value="1"></i>
-            <i class="fa fa-star" data-value="2"></i>
-            <i class="fa fa-star" data-value="3"></i>
-            <i class="fa fa-star" data-value="4"></i>
-            <i class="fa fa-star" data-value="5"></i>
-        </div>
-
-        <label>Rate the friendliness and professionalism of the staff:</label>
-        <div class="stars" id="staffStars" onclick="selectStars('staff', event)">
-            <i class="fa fa-star" data-value="1"></i>
-            <i class="fa fa-star" data-value="2"></i>
-            <i class="fa fa-star" data-value="3"></i>
-            <i class="fa fa-star" data-value="4"></i>
-            <i class="fa fa-star" data-value="5"></i>
-        </div>
-
-        <label>Were the staff members attentive to your needs and concerns?</label>
-        <textarea id="staffAttention" placeholder="Your answer..." required></textarea>
-
-        <label>Were there any issues or concerns during and after the carwash process?</label>
-        <textarea id="issues" placeholder="Your answer..." required></textarea>
-
-        <label>Based on your experience, would you recommend our carwash service to others? Any additional comments or suggestions for improvement?</label>
-        <textarea id="recommend" placeholder="Your answer..." required></textarea>
-
-        <!-- Submit Button -->
-        <button onclick="submitFeedback()">Submit</button>
+  <div class="container">
+    <h1>Feedback Form</h1>
+    <h2>How was our service?</h2>
+    <div>
+      <span class="emoji" onclick="selectService('Great')">😊 Great</span>
+      <span class="emoji" onclick="selectService('Good')">🙂 Good</span>
+      <span class="emoji" onclick="selectService('Ok')">😐 Ok</span>
+      <span class="emoji" onclick="selectService('Bad')">☹️ Bad</span>
     </div>
+    <p id="selected-service">You selected: </p>
 
-    <script>
-        let selectedFeedback = '';
-        let ratings = { cleaning: 0, staff: 0 };
+    <form>
+      <h3>Rate Car Interior and Exterior Cleaning:</h3>
+      <div class="stars">
+        <input type="radio" id="cleaning1" name="cleaningRating" value="1"><label for="cleaning1">★</label>
+        <input type="radio" id="cleaning2" name="cleaningRating" value="2"><label for="cleaning2">★</label>
+        <input type="radio" id="cleaning3" name="cleaningRating" value="3"><label for="cleaning3">★</label>
+        <input type="radio" id="cleaning4" name="cleaningRating" value="4"><label for="cleaning4">★</label>
+        <input type="radio" id="cleaning5" name="cleaningRating" value="5"><label for="cleaning5">★</label>
+      </div>
 
-        function selectEmoji(feedback, emoji) {
-            const feedbackDisplay = document.getElementById('selectedFeedback');
-            feedbackDisplay.innerHTML = `You selected: ${emoji} ${feedback}`;
-            selectedFeedback = feedback;
+      <h3>Rate the friendliness and professionalism of the staff:</h3>
+      <div class="stars">
+        <input type="radio" id="staff1" name="staffRating" value="1"><label for="staff1">★</label>
+        <input type="radio" id="staff2" name="staffRating" value="2"><label for="staff2">★</label>
+        <input type="radio" id="staff3" name="staffRating" value="3"><label for="staff3">★</label>
+        <input type="radio" id="staff4" name="staffRating" value="4"><label for="staff4">★</label>
+        <input type="radio" id="staff5" name="staffRating" value="5"><label for="staff5">★</label>
+      </div>
+
+      <h3>Were the staff attentive to your needs?</h3>
+      <input type="text" name="staffAttention" placeholder="Type your response">
+
+      <h3>Were there any issues during the process?</h3>
+      <input type="text" name="issues" placeholder="Describe any issues">
+
+      <h3>Additional comments or suggestions:</h3>
+      <input type="text" name="recommendation" placeholder="Share your feedback">
+
+      <br><br>
+      <button type="button" onclick="submitFeedback()">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    let selectedService = '';
+
+    function selectService(service) {
+      selectedService = service;
+      document.getElementById('selected-service').innerText = `You selected: ${service}`;
+    }
+
+    async function submitFeedback() {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwpaw-slZcfdyxWLYBNT1VQ-V0vq0sAWQPrF_kD5Hfitc5UxmAagW5S09Y1V00mm9VxzA/exec';
+      const formData = new FormData(document.querySelector('form'));
+
+      const feedbackData = {
+        name: 'Anonymous', // Add a name field if needed
+        serviceFeedback: selectedService,
+        cleaningRating: formData.get('cleaningRating'),
+        staffRating: formData.get('staffRating'),
+        staffAttention: formData.get('staffAttention'),
+        issues: formData.get('issues'),
+        recommendation: formData.get('recommendation'),
+      };
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(feedbackData),
+        });
+        const jsonResponse = await response.json();
+        if (jsonResponse.status === 'success') {
+          alert('Feedback submitted successfully!');
+        } else {
+          alert('Error submitting feedback: ' + jsonResponse.message);
         }
-
-        function selectStars(type, event) {
-            const stars = document.getElementById(type + 'Stars').children;
-            const value = event.target.getAttribute('data-value');
-            ratings[type] = value;
-
-            Array.from(stars).forEach((star, index) => {
-                if (index < value) {
-                    star.classList.add('selected');
-                } else {
-                    star.classList.remove('selected');
-                }
-            });
-        }
-
-        function submitFeedback() {
-            const clientName = document.getElementById('clientName').value;
-            const staffAttention = document.getElementById('staffAttention').value;
-            const issues = document.getElementById('issues').value;
-            const recommend = document.getElementById('recommend').value;
-
-            if (!clientName || !selectedFeedback || !ratings.cleaning || !ratings.staff || !staffAttention || !issues || !recommend) {
-                alert('Please fill in all the fields!');
-                return;
-            }
-
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbw_a8sMz-klZYeNZ4k8zmBewvy6La719ZXyEAykVqT1/dev';
-
-            const formData = {
-                name: clientName,
-                serviceFeedback: selectedFeedback,
-                cleaningRating: ratings.cleaning,
-                staffRating: ratings.staff,
-                staffAttention: staffAttention,
-                issues: issues,
-                recommendation: recommend
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(formData),
-                headers: { 'Content-Type': 'application/json' }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Feedback submitted successfully!');
-                        location.reload();
-                    } else {
-                        alert('There was an error submitting your feedback.');
-                    }
-                })
-                .catch(error => console.error('Error!', error.message));
-        }
-    </script>
+      } catch (error) {
+        console.error('Error!', error);
+        alert('Failed to submit feedback.');
+      }
+    }
+  </script>
 </body>
 </html>
